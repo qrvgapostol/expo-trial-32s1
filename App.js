@@ -1,33 +1,38 @@
 import { useState } from 'react';
 import { StyleSheet, View, FlatList } from 'react-native';
 
-// Ensure these import paths match your folder structure
-import GoalItem from './components/GoalItem'; 
+import Header from './components/Header';
+import GoalItem from './components/GoalItem';
 import GoalInput from './components/GoalInput';
 
 export default function App() {
   const [courseGoals, setCourseGoals] = useState([]);
 
-  // This function receives the text value from the child component
-  function addGoalHandler(enteredGoalText) { 
+  function addGoalHandler(enteredGoalText) {
     setCourseGoals((currentCourseGoals) => [
       ...currentCourseGoals,
-      { text: enteredGoalText, key: Math.random().toString() }, //
+      { text: enteredGoalText, id: Math.random().toString() },
     ]);
-  };
+  }
+
+  // Delete goal by id
+  function deleteGoalHandler(id) {
+    setCourseGoals((currentGoals) => currentGoals.filter(goal => goal.id !== id));
+  }
 
   return (
     <View style={styles.appContainer}>
-      {/* Passing the handler function to GoalInput via a prop */}
-      <GoalInput onAddGoal={addGoalHandler} /> 
-      
+      <Header />
+
+      <GoalInput onAddGoal={addGoalHandler} />
+
       <View style={styles.goalListContainer}>
         <FlatList
           data={courseGoals}
-          renderItem={(itemData) => {
-            // Passing the text data to GoalItem via a prop
-            return <GoalItem text={itemData.item.text} />; 
-          }}
+          renderItem={({ item }) => (
+            <GoalItem text={item.text} id={item.id} onDelete={deleteGoalHandler} />
+          )}
+          keyExtractor={(item) => item.id}
           alwaysBounceVertical={false}
         />
       </View>
@@ -38,10 +43,11 @@ export default function App() {
 const styles = StyleSheet.create({
   appContainer: {
     flex: 1,
-    paddingTop: 50,
-    paddingHorizontal: 16
+    paddingHorizontal: 16,
+    paddingTop: 0
   },
   goalListContainer: {
-    flex: 5
+    flex: 5,
+    marginTop: 10
   }
 });
