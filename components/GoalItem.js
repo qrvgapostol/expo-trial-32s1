@@ -6,14 +6,11 @@ function GoalItem({ text, id, onDelete }) {
 
   return (
     <>
-      {/* Press item to trigger confirmation */}
       <Pressable onPress={() => setModalVisible(true)}>
         <View style={styles.goalItems}>
           <Text style={styles.goalText}>{text}</Text>
         </View>
       </Pressable>
-
-      {/* Confirmation Modal */}
       <Modal
         visible={modalVisible}
         transparent={true}

@@ -1,4 +1,3 @@
-// components/GoalInput.js
 import { useState } from 'react';
 import { View, TextInput, Pressable, Text, Modal, StyleSheet } from 'react-native';
 
